@@ -46,6 +46,8 @@ function makePurchase() {
                 throw err
             }
             else if (res[0].stock_quantity >= howMany) {
+                let totalCost = res[0].price * howMany;
+                console.log(`Total price: $${totalCost}`);
                 console.log("Purchase successful!");
                 connection.query(
                     "UPDATE products SET ? WHERE ?",
@@ -59,6 +61,7 @@ function makePurchase() {
                     ],
                     function(err) {
                         if (err) throw err;
+                        connection.end();
                     })
             }
             else {
