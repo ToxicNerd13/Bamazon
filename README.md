@@ -25,5 +25,5 @@
 ![](./assets/images/updated-database.png)
 
 #### Not Enough Inventory:
-![](./assets/images/not-enough-inventory.png)
+![](./assets/images/not-enough-stock.png)
 
