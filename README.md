@@ -11,3 +11,19 @@
 * Inquirer package
 
 ### Screenshots of Bamazon in action...
+
+#### MySQL Database:
+![](./assets/images/database.png)
+
+#### Showing Items To User:
+![](./assets/images/show-products.png)
+
+#### Making A Purchase:
+![](./assets/images/make-purchase.png)
+
+#### Inventory Being Updated:
+![](./assets/images/updated-database.png)
+
+#### Not Enough Inventory:
+![](./assets/images/not-enough-inventory.png)
+

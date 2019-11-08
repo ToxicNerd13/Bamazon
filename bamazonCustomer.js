@@ -8,12 +8,12 @@ const connection = mysql.createConnection({
     database: "bamazon"
 });
 
-connection.connect(function(err) {
+connection.connect(function (err) {
     if (err) throw err;
-    start();
+    showProducts();
 });
 
-function start() {
+function showProducts() {
     connection.query("SELECT * FROM products", function (error, results) {
         if (error) throw error;
         for (let i = 0; i < results.length; i++) {
@@ -21,7 +21,7 @@ function start() {
             console.log(` ID: ${results[i].item_id} | Item: ${results[i].product_name} | Price: ${results[i].price} `);
         };
         console.log(``);
-        makePurchase(); 
+        makePurchase();
     });
 };
 
@@ -38,36 +38,36 @@ function makePurchase() {
             message: "How many would you like to buy?"
         }
     ])
-    .then(function(response) {
-        let purchasedItem = parseInt(response.whichProduct);
-        let howMany = parseInt(response.howMany);
-        connection.query("SELECT * FROM products WHERE ?", { item_id: purchasedItem}, function (err, res) {
-            if (err) {
-                throw err
-            }
-            else if (res[0].stock_quantity >= howMany) {
-                let totalCost = res[0].price * howMany;
-                console.log(`Total price: $${totalCost}`);
-                console.log("Purchase successful!");
-                connection.query(
-                    "UPDATE products SET ? WHERE ?",
-                    [
-                        {
-                            stock_quantity: res[0].stock_quantity - howMany
-                        },
-                        {
-                            item_id: purchasedItem
-                        }
-                    ],
-                    function(err) {
-                        if (err) throw err;
-                        connection.end();
-                    })
-            }
-            else {
-                console.log("Not enough in stock! Try fewer items or make a different selection.");
-                start();
-            };
+        .then(function (response) {
+            let purchasedItem = parseInt(response.whichProduct);
+            let howMany = parseInt(response.howMany);
+            connection.query("SELECT * FROM products WHERE ?", { item_id: purchasedItem }, function (err, res) {
+                if (err) {
+                    throw err
+                }
+                else if (res[0].stock_quantity >= howMany) {
+                    let totalCost = res[0].price * howMany;
+                    console.log(`Total price: $${totalCost}`);
+                    console.log("Purchase successful! Thanks for shopping with Bamazon!");
+                    connection.query(
+                        "UPDATE products SET ? WHERE ?",
+                        [
+                            {
+                                stock_quantity: res[0].stock_quantity - howMany
+                            },
+                            {
+                                item_id: purchasedItem
+                            }
+                        ],
+                        function (err, res) {
+                            if (err) throw err;
+                            connection.end();
+                        });
+                }
+                else {
+                    console.log("Not enough in stock! Try fewer items or make a different selection.");
+                    showProducts();
+                };
+            })
         })
-    })
 };
